@@ -41,11 +41,58 @@ class MapsActivity :
      * installed Google Play services and returned to the app.
      */
     override fun onMapReady(googleMap: GoogleMap) {
+
+        // Assigning the map
         map = googleMap
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        map.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        // Add a marker at the custom location and move the camera
+        val targetLocation = LatLng(-34.0, 151.0)
+
+        // Add Marker
+        map.addMarker(
+            MarkerOptions()
+                // Position:
+                .position(targetLocation)
+
+                // Custom Title:
+                .title("Marker in Sydney")
+        )
+
+        // Move the camera to the location
+        // map.moveCamera(CameraUpdateFactory.newLatLng(targetLocation))
+
+        // Move the camera to the location with ZOOM Level
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(targetLocation, 15f))
+
+        map.uiSettings.apply {
+            // Enables: Zoom +/- buttons on the map
+            isZoomControlsEnabled = true
+
+            // Static Image View
+            // ==============================================
+            // 1. Fixed Position: Disables camera movement
+            // 2. Disabled Zoom functionality
+            // isScrollGesturesEnabled = false
+            // isZoomGesturesEnabled = false
+
+            // My Location
+            // * Requires enabling my-location layer
+            // ==============================================
+            // isMyLocationButtonEnabled = true
+
+            // onPress Toolbar
+            // ==============================================
+            // 1. Go to Google Maps
+            // 2. Find Direction
+            isMapToolbarEnabled = true
+
+            // on Rotation
+            isCompassEnabled = true
+
+        }
+
+        // Padding: L T R B
+        map.setPadding(0, 0, 0, 0)
+
     }
 }
