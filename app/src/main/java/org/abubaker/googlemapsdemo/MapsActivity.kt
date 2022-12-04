@@ -9,6 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
+import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
@@ -22,7 +23,8 @@ import org.abubaker.googlemapsdemo.misc.TypeAndStyle
 class MapsActivity :
     AppCompatActivity(),
     OnMapReadyCallback,
-    OnMarkerClickListener {
+    OnMarkerClickListener,
+    OnMarkerDragListener {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -141,6 +143,9 @@ class MapsActivity :
 
                 // Custom Title:
                 .title("Marker in Sydney")
+
+                // Enable Dragging
+                .draggable(true)
         )
 
         losAngelesMarker!!.tag = "Restaurant"
@@ -192,6 +197,9 @@ class MapsActivity :
         // map.setMaxZoomPreference(17f)
 
         map.setOnMarkerClickListener(this)
+
+        // Important! - Dragging
+        map.setOnMarkerDragListener(this)
 
         // Coroutine
         lifecycleScope.launch {
@@ -277,6 +285,26 @@ class MapsActivity :
         return false
 
     }
+
+    /**
+     * Methods for allowing the user to Drag the Marker on map
+     */
+
+    // Start
+    override fun onMarkerDragStart(marker: Marker) {
+        Log.d("Drag", "onMarkerDragStart")
+    }
+
+    // Drag: When the user starts dragging the marker
+    override fun onMarkerDrag(marker: Marker) {
+        Log.d("Drag", "onMarkerDrag")
+    }
+
+    // End
+    override fun onMarkerDragEnd(marker: Marker) {
+        Log.d("Drag", "onMarkerDragEnd")
+    }
+
 
     /**
      *
