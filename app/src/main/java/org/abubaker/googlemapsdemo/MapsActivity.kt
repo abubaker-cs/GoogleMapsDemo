@@ -265,11 +265,19 @@ class MapsActivity :
      */
     private fun onMapLongClicked() {
         map.setOnMapLongClickListener {
-            Toast.makeText(
-                this,
-                "Long Clicked at: ${it.longitude}, ${it.latitude}",
-                Toast.LENGTH_SHORT
-            ).show()
+            // Toast.makeText(this, "Long Clicked at: ${it.longitude}, ${it.latitude}", Toast.LENGTH_SHORT).show()
+
+            // Add Marker
+            map.addMarker(
+                MarkerOptions()
+
+                    // Position:
+                    .position(it)
+
+                    // Custom Title:
+                    .title("New Marker")
+            )
+
         }
 
     }
