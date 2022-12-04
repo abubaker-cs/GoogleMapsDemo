@@ -1,7 +1,6 @@
 package org.abubaker.googlemapsdemo
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -10,9 +9,10 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import org.abubaker.googlemapsdemo.databinding.ActivityMapsBinding
+import org.abubaker.googlemapsdemo.misc.CameraAndViewport
+import org.abubaker.googlemapsdemo.misc.TypeAndStyle
 
 class MapsActivity :
     AppCompatActivity(),
@@ -20,6 +20,12 @@ class MapsActivity :
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+
+    /**
+     * References to our external classes in the @misc package
+     */
+    private val typeAndStyle by lazy { TypeAndStyle() }
+    private val cameraAndViewport by lazy { CameraAndViewport() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,28 +103,7 @@ class MapsActivity :
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when (item.itemId) {
-
-            R.id.normal_map -> {
-                map.mapType = GoogleMap.MAP_TYPE_NORMAL
-            }
-
-            R.id.hybrid_map -> {
-                map.mapType = GoogleMap.MAP_TYPE_HYBRID
-            }
-
-            R.id.satellite_map -> {
-                map.mapType = GoogleMap.MAP_TYPE_SATELLITE
-            }
-
-            R.id.terrain_map -> {
-                map.mapType = GoogleMap.MAP_TYPE_TERRAIN
-            }
-
-            R.id.none_map -> {
-                map.mapType = GoogleMap.MAP_TYPE_NONE
-            }
-        }
+        typeAndStyle.setMapType(item, map)
 
         return true
 
@@ -155,7 +140,8 @@ class MapsActivity :
         // map.moveCamera(CameraUpdateFactory.newLatLng(targetLocation))
 
         // Move the camera to the location with ZOOM Level
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(targetLocation, 15f))
+        // map.moveCamera(CameraUpdateFactory.newLatLngZoom(targetLocation, 15f))
+        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewport.losAngeles))
 
         map.uiSettings.apply {
             // Enables: Zoom +/- buttons on the map
@@ -189,32 +175,7 @@ class MapsActivity :
 
 
         // Custom Map Style
-        setMapStyle(map)
-    }
-
-    /**
-     * Load style.json file from assets folder @res/raw/style.json
-     */
-    private fun setMapStyle(googleMap: GoogleMap) {
-
-        try {
-            // Customise the styling of the base map using a JSON object defined
-            // in a raw resource file.
-            // Success
-            val success = map.setMapStyle(
-                MapStyleOptions.loadRawResourceStyle(
-                    this, R.raw.style
-                )
-            )
-
-            // Failed to load map style
-            if (!success) {
-                Log.e("Maps", "Failed to load Style.")
-            }
-
-        } catch (e: Exception) {
-            Log.e("Maps", e.toString())
-        }
+        typeAndStyle.setMapStyle(map, this)
     }
 }
 
