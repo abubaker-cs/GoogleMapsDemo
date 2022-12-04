@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -23,7 +22,7 @@ import org.abubaker.googlemapsdemo.misc.TypeAndStyle
 class MapsActivity :
     AppCompatActivity(),
     OnMapReadyCallback,
-    OnMarkerClickListener,
+    // OnMarkerClickListener,
     OnMarkerDragListener {
 
     private lateinit var map: GoogleMap
@@ -145,6 +144,9 @@ class MapsActivity :
                 // Custom Title:
                 .title("Marker in Sydney")
 
+                // InfoWindow: Description
+                .snippet("This is the snippet")
+
                 // Enable Dragging
                 // .draggable(true)
 
@@ -182,22 +184,27 @@ class MapsActivity :
 
         )
 
-        val losAngelesMarker2 = map.addMarker(
-            MarkerOptions()
-                // Position:
-                .position(losAngeles2)
+//        val losAngelesMarker2 = map.addMarker(
+//            MarkerOptions()
+//                // Position:
+//                .position(losAngeles2)
+//
+//                // Custom Title:
+//                .title("Marker in LosAngeles")
+//
+//                // InfoWindow: Description
+//                .snippet("This is the snippet")
+//
+//                // Enable Dragging
+//                .draggable(true)
+//
+//                // Z-Index
+//                .zIndex(1f)
+//        )
 
-                // Custom Title:
-                .title("Marker in LosAngeles")
-
-                // Enable Dragging
-                .draggable(true)
-
-                // Z-Index
-                .zIndex(1f)
-        )
-
-        losAngelesMarker!!.tag = "Restaurant"
+        // Important to initialize
+        losAngelesMarker!!.tag = "Restaurant 1"
+        // losAngelesMarker2!!.tag = "Restaurant 2"
 
 
         // Move the camera to the location
@@ -245,7 +252,8 @@ class MapsActivity :
         // map.setMinZoomPreference(15f)
         // map.setMaxZoomPreference(17f)
 
-        map.setOnMarkerClickListener(this)
+        // TODO: Enable so the setOnMarkerClickListener() and onMarkerClick() can work
+        // map.setOnMarkerClickListener(this)
 
         // Important! - Dragging
         map.setOnMarkerDragListener(this)
@@ -321,19 +329,28 @@ class MapsActivity :
 
     }
 
-    override fun onMarkerClick(marker: Marker): Boolean {
+    // override fun onMarkerClick(marker: Marker): Boolean {
 
-        if (marker != null) {
-            Log.d("Marker", marker.tag as String)
-        } else {
-            Log.d("Marker", "Marker is null")
-        }
+    // map.animateCamera(CameraUpdateFactory.zoomTo(17f), 2000, null)
 
-        // return true = it will disable the default behavior of showing the info window
-        // return false = it will show the default info window
-        return false
+    // This is the workaround, to show the InfoWindow while returning true
+    // marker.showInfoWindow()
 
-    }
+    // Hide the info window
+    // marker.hideInfoWindow()
+
+    // return true = it will disable the default behavior of showing the info window
+    // return false = it will show the default info window
+    // return false
+
+
+//        if (marker != null) {
+//            Log.d("Marker", marker.tag as String)
+//        } else {
+//            Log.d("Marker", "Marker is null")
+//        }
+
+    // }
 
     /**
      * Methods for allowing the user to Drag the Marker on map
