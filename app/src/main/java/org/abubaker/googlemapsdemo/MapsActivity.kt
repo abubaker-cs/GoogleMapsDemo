@@ -254,7 +254,7 @@ class MapsActivity :
     /**
      *
      */
-    fun onMapClicked() {
+    private fun onMapClicked() {
         map.setOnMapClickListener {
             Toast.makeText(this, "Single Click", Toast.LENGTH_SHORT).show()
         }
@@ -263,9 +263,13 @@ class MapsActivity :
     /**
      *
      */
-    fun onMapLongClicked() {
+    private fun onMapLongClicked() {
         map.setOnMapLongClickListener {
-            Toast.makeText(this, "Long Click", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                "Long Clicked at: ${it.longitude}, ${it.latitude}",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
     }
