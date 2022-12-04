@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.abubaker.googlemapsdemo.databinding.ActivityMapsBinding
 import org.abubaker.googlemapsdemo.misc.CameraAndViewport
 import org.abubaker.googlemapsdemo.misc.TypeAndStyle
@@ -124,13 +127,14 @@ class MapsActivity :
         map = googleMap
 
         // Add a marker at the custom location and move the camera
-        val targetLocation = LatLng(-34.0, 151.0)
+        val losAngeles = LatLng(-34.0, 151.0)
+        val newYork = LatLng(40.7128, -74.0060)
 
         // Add Marker
         map.addMarker(
             MarkerOptions()
                 // Position:
-                .position(targetLocation)
+                .position(losAngeles)
 
                 // Custom Title:
                 .title("Marker in Sydney")
@@ -140,8 +144,8 @@ class MapsActivity :
         // map.moveCamera(CameraUpdateFactory.newLatLng(targetLocation))
 
         // Move the camera to the location with ZOOM Level
-        // map.moveCamera(CameraUpdateFactory.newLatLngZoom(targetLocation, 15f))
-        map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewport.losAngeles))
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(losAngeles, 10f))
+        // map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewport.losAngeles))
 
         map.uiSettings.apply {
             // Enables: Zoom +/- buttons on the map
@@ -182,19 +186,27 @@ class MapsActivity :
         // map.setMaxZoomPreference(17f)
 
         // Coroutine
-//        lifecycleScope.launch {
-//            /**
-//             * ZoomIn/Out() - 1 Level
-//             * ZoomTo() - Specific Level
-//             * ZoomBy() - It will zoom by certain amount of zoom level
-//             */
-//
-//            // It will wait for 5 seconds
-//            delay(5000L)
-//
-//            // Then zoom by 3 levels
-//            map.moveCamera(CameraUpdateFactory.zoomBy(3f))
-//        }
+        lifecycleScope.launch {
+            /**
+             * ZoomIn/Out() - 1 Level
+             * ZoomTo() - Specific Level
+             * ZoomBy() - It will zoom by certain amount of zoom level
+             */
+
+            // It will wait for 5 seconds
+            delay(5000L)
+
+            // Then zoom by 3 levels
+            // map.moveCamera(CameraUpdateFactory.zoomBy(3f))
+
+            /**
+             * 1. newLatLng
+             * 2. newLatLngZoom
+             * 3. newCameraPosition
+             */
+            map.moveCamera(CameraUpdateFactory.newLatLng(newYork))
+
+        }
     }
 }
 
