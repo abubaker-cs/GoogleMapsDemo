@@ -1,17 +1,19 @@
 package org.abubaker.googlemapsdemo
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.abubaker.googlemapsdemo.databinding.ActivityMapsBinding
 import org.abubaker.googlemapsdemo.misc.CameraAndViewport
@@ -19,7 +21,8 @@ import org.abubaker.googlemapsdemo.misc.TypeAndStyle
 
 class MapsActivity :
     AppCompatActivity(),
-    OnMapReadyCallback {
+    OnMapReadyCallback,
+    OnMarkerClickListener {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -140,6 +143,8 @@ class MapsActivity :
                 .title("Marker in Sydney")
         )
 
+        losAngelesMarker!!.tag = "Restaurant"
+
 
         // Move the camera to the location
         // map.moveCamera(CameraUpdateFactory.newLatLng(targetLocation))
@@ -186,6 +191,8 @@ class MapsActivity :
         // map.setMinZoomPreference(15f)
         // map.setMaxZoomPreference(17f)
 
+        map.setOnMarkerClickListener(this)
+
         // Coroutine
         lifecycleScope.launch {
             /**
@@ -195,7 +202,7 @@ class MapsActivity :
              */
 
             // It will wait for 5 seconds
-            delay(5000L)
+            // delay(5000L)
 
             // losAngelesMarker!!.remove()
 
@@ -254,6 +261,20 @@ class MapsActivity :
 
 //        onMapClicked()
 //        onMapLongClicked()
+
+    }
+
+    override fun onMarkerClick(marker: Marker): Boolean {
+
+        if (marker != null) {
+            Log.d("Marker", marker.tag as String)
+        } else {
+            Log.d("Marker", "Marker is null")
+        }
+
+        // return true = it will disable the default behavior of showing the info window
+        // return false = it will show the default info window
+        return false
 
     }
 
