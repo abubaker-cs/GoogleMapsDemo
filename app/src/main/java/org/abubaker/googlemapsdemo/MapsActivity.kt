@@ -213,15 +213,25 @@ class MapsActivity :
             // map.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraAndViewport.melbourneBounds.center, 10f))
 
             // 1. Set the Boundary range
-            map.moveCamera(
+            // map.moveCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewport.melbourneBounds, 100))
+
+            // 2. Restrict user from moving the camera OUTSIDE of our boundaries
+            // map.setLatLngBoundsForCameraTarget(cameraAndViewport.melbourneBounds)
+
+            /**
+             * Animate the camera to the specified location.
+             * 1. animateCamera()
+             * 2. stopAnimation()
+             */
+            map.animateCamera(
                 CameraUpdateFactory.newLatLngBounds(
                     cameraAndViewport.melbourneBounds,
                     100
-                )
+                ),
+                2000,
+                null
             )
 
-            // 2. Restrict user from moving the camera OUTSIDE of our boundaries
-            map.setLatLngBoundsForCameraTarget(cameraAndViewport.melbourneBounds)
 
         }
     }
