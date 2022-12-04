@@ -1,10 +1,15 @@
 package org.abubaker.googlemapsdemo
 
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -12,9 +17,7 @@ import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import kotlinx.coroutines.launch
 import org.abubaker.googlemapsdemo.databinding.ActivityMapsBinding
 import org.abubaker.googlemapsdemo.misc.CameraAndViewport
@@ -145,7 +148,26 @@ class MapsActivity :
                 .title("Marker in Sydney")
 
                 // Enable Dragging
-                .draggable(true)
+                // .draggable(true)
+
+                // Custom Icon - Official Colors
+                // .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+
+                // Custom Icon - Custom HUE Color - https://www.w3schools.com/colors/colors_hsl.asp
+                // .icon(BitmapDescriptorFactory.defaultMarker(134f))
+
+                /**
+                 * We cannot use Vector file directly, otherwise the app will crash. Instead we need
+                 * to convert the vector to PNG file and then use it.
+                 *
+                 * 1. fromResource()
+                 * 2. fromBitmap()
+                 * 3. fromAsset()
+                 * 4. fromPath()
+                 * 5. fromFile()
+                 */
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_android))
+
         )
 
         losAngelesMarker!!.tag = "Restaurant"
@@ -303,6 +325,48 @@ class MapsActivity :
     // End
     override fun onMarkerDragEnd(marker: Marker) {
         Log.d("Drag", "onMarkerDragEnd")
+    }
+
+    /**
+     * Convert Vector to Bitmap
+     */
+    private fun fromVectorToBitmap(id: Int, color: Int): BitmapDescriptor {
+
+        // Convert Vector to Bitmap
+        val vectorDrawable: Drawable? = ResourcesCompat.getDrawable(resources, id, null)
+
+        if (vectorDrawable == null) {
+
+            // Log the Error
+            Log.d("MapsActivity", "Resource not found")
+
+            // Return the default marker, because the resource is not found
+            return BitmapDescriptorFactory.defaultMarker()
+
+        }
+
+        // Set the size of the drawable
+        val bitmap = Bitmap.createBitmap(
+            vectorDrawable.intrinsicWidth,
+            vectorDrawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+
+        // Create canvas
+        val canvas = Canvas(bitmap)
+
+        // Setting the bounds of the canvas
+        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
+
+        // Set the color
+        DrawableCompat.setTint(vectorDrawable, color)
+
+        // Draw the vector drawable on the canvas
+        vectorDrawable.draw(canvas)
+
+        // Return the converted bitmap
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
+
     }
 
 
