@@ -3,16 +3,14 @@ package org.abubaker.googlemapsdemo
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.abubaker.googlemapsdemo.databinding.ActivityMapsBinding
 import org.abubaker.googlemapsdemo.misc.CameraAndViewport
 import org.abubaker.googlemapsdemo.misc.TypeAndStyle
@@ -127,7 +125,7 @@ class MapsActivity :
         map = googleMap
 
         // Add a marker at the custom location and move the camera
-        val losAngeles = LatLng(-34.0, 151.0)
+        val losAngeles = LatLng(34.04692127928215, -118.24748421830992)
         val newYork = LatLng(40.7128, -74.0060)
 
         // Add Marker
@@ -186,55 +184,92 @@ class MapsActivity :
         // map.setMaxZoomPreference(17f)
 
         // Coroutine
-        lifecycleScope.launch {
-            /**
-             * ZoomIn/Out() - 1 Level
-             * ZoomTo() - Specific Level
-             * ZoomBy() - It will zoom by certain amount of zoom level
-             */
+//        lifecycleScope.launch {
+//            /**
+//             * ZoomIn/Out() - 1 Level
+//             * ZoomTo() - Specific Level
+//             * ZoomBy() - It will zoom by certain amount of zoom level
+//             */
+//
+//            // It will wait for 5 seconds
+//            delay(5000L)
+//
+//            // Then zoom by 3 levels
+//            // map.moveCamera(CameraUpdateFactory.zoomBy(3f))
+//
+//            /**
+//             * 1. newLatLng
+//             * 2. newLatLngZoom
+//             * 3. newCameraPosition
+//             * 4. scrollBy
+//             */
+//
+//            // moveCamera: 100f to the right side
+//            // map.moveCamera(CameraUpdateFactory.scrollBy(-200f, 100f))
+//
+//            // Boundaries
+//            // map.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraAndViewport.melbourneBounds.center, 10f))
+//
+//            // 1. Set the Boundary range
+//            // map.moveCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewport.melbourneBounds, 100))
+//
+//            // 2. Restrict user from moving the camera OUTSIDE of our boundaries
+//            // map.setLatLngBoundsForCameraTarget(cameraAndViewport.melbourneBounds)
+//
+//            /**
+//             * Animate the camera to the specified location.
+//             * 1. animateCamera()
+//             * 2. stopAnimation()
+//             */
+//
+//            map.animateCamera(
+//                CameraUpdateFactory.newCameraPosition(
+//                    cameraAndViewport.losAngeles
+//                ),
+//                2000,
+//                object : GoogleMap.CancelableCallback {
+//
+//                    override fun onCancel() {
+//                        Toast.makeText(this@MapsActivity, "Animation Cancelled", Toast.LENGTH_SHORT)
+//                            .show()
+//                    }
+//
+//                    override fun onFinish() {
+//                        Toast.makeText(this@MapsActivity, "Animation Finished", Toast.LENGTH_SHORT)
+//                            .show()
+//                    }
+//
+//                }
+//            )
+//            // map.animateCamera(CameraUpdateFactory.newLatLngZoom(losAngeles, 15f), 2000, null)
+//            // map.animateCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewport.melbourneBounds, 100), 2000, null)
+//
+//        }
 
-            // It will wait for 5 seconds
-            delay(5000L)
+        onMapClicked()
+        onMapLongClicked()
 
-            // Then zoom by 3 levels
-            // map.moveCamera(CameraUpdateFactory.zoomBy(3f))
+    }
 
-            /**
-             * 1. newLatLng
-             * 2. newLatLngZoom
-             * 3. newCameraPosition
-             * 4. scrollBy
-             */
-
-            // moveCamera: 100f to the right side
-            // map.moveCamera(CameraUpdateFactory.scrollBy(-200f, 100f))
-
-            // Boundaries
-            // map.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraAndViewport.melbourneBounds.center, 10f))
-
-            // 1. Set the Boundary range
-            // map.moveCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewport.melbourneBounds, 100))
-
-            // 2. Restrict user from moving the camera OUTSIDE of our boundaries
-            // map.setLatLngBoundsForCameraTarget(cameraAndViewport.melbourneBounds)
-
-            /**
-             * Animate the camera to the specified location.
-             * 1. animateCamera()
-             * 2. stopAnimation()
-             */
-            map.animateCamera(
-                CameraUpdateFactory.newLatLngBounds(
-                    cameraAndViewport.melbourneBounds,
-                    100
-                ),
-                2000,
-                null
-            )
-
-
+    /**
+     *
+     */
+    fun onMapClicked() {
+        map.setOnMapClickListener {
+            Toast.makeText(this, "Single Click", Toast.LENGTH_SHORT).show()
         }
     }
+
+    /**
+     *
+     */
+    fun onMapLongClicked() {
+        map.setOnMapLongClickListener {
+            Toast.makeText(this, "Long Click", Toast.LENGTH_SHORT).show()
+        }
+
+    }
 }
+
 
 
