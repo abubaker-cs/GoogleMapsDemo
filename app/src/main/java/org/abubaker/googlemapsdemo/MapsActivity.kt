@@ -210,13 +210,18 @@ class MapsActivity :
             // map.moveCamera(CameraUpdateFactory.scrollBy(-200f, 100f))
 
             // Boundaries
-            // map.moveCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewport.melbourneBounds, 100))
+            // map.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraAndViewport.melbourneBounds.center, 10f))
+
+            // 1. Set the Boundary range
             map.moveCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    cameraAndViewport.melbourneBounds.center,
-                    10f
+                CameraUpdateFactory.newLatLngBounds(
+                    cameraAndViewport.melbourneBounds,
+                    100
                 )
             )
+
+            // 2. Restrict user from moving the camera OUTSIDE of our boundaries
+            map.setLatLngBoundsForCameraTarget(cameraAndViewport.melbourneBounds)
 
         }
     }
