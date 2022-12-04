@@ -6,4 +6,7 @@
     <string name="satellite">Satellite</string>
     <string name="terrain">Terrain</string>
     <string name="none">None</string>
+    <string name="img_desc">Image of the place</string>
+    <string name="description">Some random text</string>
+    <string name="title">Title</string>
 </resources>
