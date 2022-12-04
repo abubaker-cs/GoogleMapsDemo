@@ -8,7 +8,7 @@ class CameraAndViewport {
     val losAngeles: CameraPosition = CameraPosition.Builder()
 
         // Actual Target
-        .target(LatLng(-34.0, 151.0))
+        .target(LatLng(34.04692127928215, -118.24748421830992))
 
         // Zoom Level
         .zoom(17f)
