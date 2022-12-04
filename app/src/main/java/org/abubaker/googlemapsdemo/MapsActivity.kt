@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.launch
+import org.abubaker.googlemapsdemo.adapters.CustomInfoAdapter
 import org.abubaker.googlemapsdemo.databinding.ActivityMapsBinding
 import org.abubaker.googlemapsdemo.misc.CameraAndViewport
 import org.abubaker.googlemapsdemo.misc.TypeAndStyle
@@ -257,6 +258,9 @@ class MapsActivity :
 
         // Important! - Dragging
         map.setOnMarkerDragListener(this)
+
+        // Custom InfoWindow
+        map.setInfoWindowAdapter(CustomInfoAdapter(this))
 
         // Coroutine
         lifecycleScope.launch {
