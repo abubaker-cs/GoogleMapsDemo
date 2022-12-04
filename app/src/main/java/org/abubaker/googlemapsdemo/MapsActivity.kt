@@ -1,15 +1,10 @@
 package org.abubaker.googlemapsdemo
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -17,7 +12,9 @@ import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.launch
 import org.abubaker.googlemapsdemo.databinding.ActivityMapsBinding
 import org.abubaker.googlemapsdemo.misc.CameraAndViewport
@@ -136,6 +133,7 @@ class MapsActivity :
 
         // Add a marker at the custom location and move the camera
         val losAngeles = LatLng(34.04692127928215, -118.24748421830992)
+        val losAngeles2 = LatLng(34.125037184477044, -118.38286807008632)
         val newYork = LatLng(40.7128, -74.0060)
 
         // Add Marker
@@ -166,8 +164,37 @@ class MapsActivity :
                  * 4. fromPath()
                  * 5. fromFile()
                  */
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_android))
 
+                // .icon(fromVectorToBitmap(R.drawable.ic_android, Color.parseColor("#00D176")))
+                // .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_android))
+
+                // Transparency
+                .alpha(0.85f)
+
+                // Flat icons will:
+                // 1. Retain their size when they are zoomed in or out
+                // 2. Always face the camera (fixed direction)
+                // .flat(true)
+
+                // Rotation of the icon
+                .rotation(90f)
+
+
+        )
+
+        val losAngelesMarker2 = map.addMarker(
+            MarkerOptions()
+                // Position:
+                .position(losAngeles2)
+
+                // Custom Title:
+                .title("Marker in LosAngeles")
+
+                // Enable Dragging
+                .draggable(true)
+
+                // Z-Index
+                .zIndex(1f)
         )
 
         losAngelesMarker!!.tag = "Restaurant"
@@ -326,49 +353,6 @@ class MapsActivity :
     override fun onMarkerDragEnd(marker: Marker) {
         Log.d("Drag", "onMarkerDragEnd")
     }
-
-    /**
-     * Convert Vector to Bitmap
-     */
-    private fun fromVectorToBitmap(id: Int, color: Int): BitmapDescriptor {
-
-        // Convert Vector to Bitmap
-        val vectorDrawable: Drawable? = ResourcesCompat.getDrawable(resources, id, null)
-
-        if (vectorDrawable == null) {
-
-            // Log the Error
-            Log.d("MapsActivity", "Resource not found")
-
-            // Return the default marker, because the resource is not found
-            return BitmapDescriptorFactory.defaultMarker()
-
-        }
-
-        // Set the size of the drawable
-        val bitmap = Bitmap.createBitmap(
-            vectorDrawable.intrinsicWidth,
-            vectorDrawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-
-        // Create canvas
-        val canvas = Canvas(bitmap)
-
-        // Setting the bounds of the canvas
-        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
-
-        // Set the color
-        DrawableCompat.setTint(vectorDrawable, color)
-
-        // Draw the vector drawable on the canvas
-        vectorDrawable.draw(canvas)
-
-        // Return the converted bitmap
-        return BitmapDescriptorFactory.fromBitmap(bitmap)
-
-    }
-
 
     /**
      *
