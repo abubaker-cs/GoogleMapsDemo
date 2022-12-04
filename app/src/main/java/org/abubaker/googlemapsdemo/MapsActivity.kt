@@ -1,6 +1,7 @@
 package org.abubaker.googlemapsdemo
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import org.abubaker.googlemapsdemo.databinding.ActivityMapsBinding
 
@@ -185,5 +187,35 @@ class MapsActivity :
         // Padding: L T R B
         map.setPadding(0, 0, 0, 0)
 
+
+        // Custom Map Style
+        setMapStyle(map)
+    }
+
+    /**
+     * Load style.json file from assets folder @res/raw/style.json
+     */
+    private fun setMapStyle(googleMap: GoogleMap) {
+
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            // Success
+            val success = map.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    this, R.raw.style
+                )
+            )
+
+            // Failed to load map style
+            if (!success) {
+                Log.e("Maps", "Failed to load Style.")
+            }
+
+        } catch (e: Exception) {
+            Log.e("Maps", e.toString())
+        }
     }
 }
+
+
