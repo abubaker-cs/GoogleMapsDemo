@@ -38,24 +38,24 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:latest-version'
-    implementation 'androidx.appcompat:appcompat:latest-version'
-    implementation 'com.google.android.material:material:latest-version'
-    implementation 'com.google.android.gms:play-services-maps:latest-version'
-    implementation 'androidx.constraintlayout:constraintlayout:latest-version'
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.7.0'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:latest-version'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:latest-version"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1"
 
     // ViewModelScope
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:latest-version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0-alpha03"
 
     // lifecycleScope
-    implementation "androidx.lifecycle:lifecycle-extensions:latest-version"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:latest-version"
+    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.0-alpha03"
 
-    testImplementation 'junit:junit:latest-version'
-    androidTestImplementation 'androidx.test.ext:junit:latest-version'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:latest-version'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 }

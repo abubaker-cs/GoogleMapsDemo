@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.coroutines.launch
 import org.abubaker.googlemapsdemo.databinding.ActivityMapsBinding
 import org.abubaker.googlemapsdemo.misc.CameraAndViewport
 import org.abubaker.googlemapsdemo.misc.TypeAndStyle
@@ -184,9 +182,19 @@ class MapsActivity :
         // map.setMaxZoomPreference(17f)
 
         // Coroutine
-        lifecycleScope.launch {
-            map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraAndViewport.losAngeles))
-        }
+//        lifecycleScope.launch {
+//            /**
+//             * ZoomIn/Out() - 1 Level
+//             * ZoomTo() - Specific Level
+//             * ZoomBy() - It will zoom by certain amount of zoom level
+//             */
+//
+//            // It will wait for 5 seconds
+//            delay(5000L)
+//
+//            // Then zoom by 3 levels
+//            map.moveCamera(CameraUpdateFactory.zoomBy(3f))
+//        }
     }
 }
 
