@@ -203,8 +203,20 @@ class MapsActivity :
              * 1. newLatLng
              * 2. newLatLngZoom
              * 3. newCameraPosition
+             * 4. scrollBy
              */
-            map.moveCamera(CameraUpdateFactory.newLatLng(newYork))
+
+            // moveCamera: 100f to the right side
+            // map.moveCamera(CameraUpdateFactory.scrollBy(-200f, 100f))
+
+            // Boundaries
+            // map.moveCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewport.melbourneBounds, 100))
+            map.moveCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    cameraAndViewport.melbourneBounds.center,
+                    10f
+                )
+            )
 
         }
     }

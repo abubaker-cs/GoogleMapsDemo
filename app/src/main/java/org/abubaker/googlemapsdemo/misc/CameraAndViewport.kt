@@ -2,6 +2,7 @@ package org.abubaker.googlemapsdemo.misc
 
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 
 class CameraAndViewport {
 
@@ -21,5 +22,13 @@ class CameraAndViewport {
 
         // Build
         .build()
+
+
+    // Boundaries
+    val melbourneBounds = LatLngBounds(
+        LatLng(-37.814107, 144.963280),  // SW bounds
+        LatLng(-37.812395, 144.971459)   // NE bounds
+
+    )
 
 }
