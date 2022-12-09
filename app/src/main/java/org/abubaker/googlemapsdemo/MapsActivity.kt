@@ -5,20 +5,19 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
-import com.google.android.gms.maps.GoogleMap.OnPolylineClickListener
+import com.google.android.gms.maps.GoogleMap.*
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
-import kotlinx.coroutines.launch
 import org.abubaker.googlemapsdemo.adapters.CustomInfoAdapter
 import org.abubaker.googlemapsdemo.databinding.ActivityMapsBinding
 import org.abubaker.googlemapsdemo.misc.CameraAndViewport
+import org.abubaker.googlemapsdemo.misc.Shapes
 import org.abubaker.googlemapsdemo.misc.TypeAndStyle
 
 class MapsActivity :
@@ -26,7 +25,8 @@ class MapsActivity :
     OnMapReadyCallback,
     // OnMarkerClickListener,
     OnMarkerDragListener,
-    OnPolylineClickListener {
+    OnPolylineClickListener,
+    OnCircleClickListener {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
@@ -249,10 +249,21 @@ class MapsActivity :
         typeAndStyle.setMapStyle(map, this)
 
         // Rectangular Area (Polygon Shape)
-        shapes.addPolygon(map)
+        // shapes.addPolygon(map)
 
-        // Click Listener - Polyline
+
+        // Circular Area (Circle Shape)
+        shapes.addCircle(map)
+
+        // Coroutine
+        // lifecycleScope.launch { }
+
+
+        // 1.1 Click Listener - Polyline
         // map.setOnPolylineClickListener(this)
+
+        // 1.2 Click Listener - Circle
+        // map.setOnCircleClickListener(this)
 
         // Constraints: Min/Max Zoom Levels
         // map.setMinZoomPreference(15f)
@@ -268,45 +279,45 @@ class MapsActivity :
         map.setInfoWindowAdapter(CustomInfoAdapter(this))
 
         // Coroutine
-        lifecycleScope.launch {
-            /**
-             * ZoomIn/Out() - 1 Level
-             * ZoomTo() - Specific Level
-             * ZoomBy() - It will zoom by certain amount of zoom level
-             */
+        // lifecycleScope.launch {
+        /**
+         * ZoomIn/Out() - 1 Level
+         * ZoomTo() - Specific Level
+         * ZoomBy() - It will zoom by certain amount of zoom level
+         */
 
-            // It will wait for 5 seconds
-            // delay(5000L)
+        // It will wait for 5 seconds
+        // delay(5000L)
 
-            // losAngelesMarker!!.remove()
+        // losAngelesMarker!!.remove()
 
-            // Then zoom by 3 levels
-            // map.moveCamera(CameraUpdateFactory.zoomBy(3f))
+        // Then zoom by 3 levels
+        // map.moveCamera(CameraUpdateFactory.zoomBy(3f))
 
-            /**
-             * 1. newLatLng
-             * 2. newLatLngZoom
-             * 3. newCameraPosition
-             * 4. scrollBy
-             */
+        /**
+         * 1. newLatLng
+         * 2. newLatLngZoom
+         * 3. newCameraPosition
+         * 4. scrollBy
+         */
 
-            // moveCamera: 100f to the right side
-            // map.moveCamera(CameraUpdateFactory.scrollBy(-200f, 100f))
+        // moveCamera: 100f to the right side
+        // map.moveCamera(CameraUpdateFactory.scrollBy(-200f, 100f))
 
-            // Boundaries
-            // map.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraAndViewport.melbourneBounds.center, 10f))
+        // Boundaries
+        // map.moveCamera(CameraUpdateFactory.newLatLngZoom(cameraAndViewport.melbourneBounds.center, 10f))
 
-            // 1. Set the Boundary range
-            // map.moveCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewport.melbourneBounds, 100))
+        // 1. Set the Boundary range
+        // map.moveCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewport.melbourneBounds, 100))
 
-            // 2. Restrict user from moving the camera OUTSIDE of our boundaries
-            // map.setLatLngBoundsForCameraTarget(cameraAndViewport.melbourneBounds)
+        // 2. Restrict user from moving the camera OUTSIDE of our boundaries
+        // map.setLatLngBoundsForCameraTarget(cameraAndViewport.melbourneBounds)
 
-            /**
-             * Animate the camera to the specified location.
-             * 1. animateCamera()
-             * 2. stopAnimation()
-             */
+        /**
+         * Animate the camera to the specified location.
+         * 1. animateCamera()
+         * 2. stopAnimation()
+         */
 
 //            map.animateCamera(
 //                CameraUpdateFactory.newCameraPosition(
@@ -328,15 +339,15 @@ class MapsActivity :
 //                }
 //            )
 
-            // map.animateCamera(CameraUpdateFactory.newLatLngZoom(losAngeles, 15f), 2000, null)
-            // map.animateCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewport.melbourneBounds, 100), 2000, null)
+        // map.animateCamera(CameraUpdateFactory.newLatLngZoom(losAngeles, 15f), 2000, null)
+        // map.animateCamera(CameraUpdateFactory.newLatLngBounds(cameraAndViewport.melbourneBounds, 100), 2000, null)
 
-        }
+        // }
 
         // Coroutine
-        lifecycleScope.launch {
-            // shapes.addPolyline()
-        }
+        // lifecycleScope.launch {
+        // shapes.addPolyline()
+        // }
 
 //        onMapClicked()
 //        onMapLongClicked()
@@ -416,8 +427,14 @@ class MapsActivity :
 //
 //    }
 
+    // 1.1 Click Listener - Polyline
     override fun onPolylineClick(p0: Polyline) {
         // Toast.makeText(this, "Polyline Clicked", Toast.LENGTH_SHORT).show()
+    }
+
+    // 1.2 Click Listener - Circle
+    override fun onCircleClick(p0: Circle) {
+        // Toast.makeText(this, "Circle Clicked", Toast.LENGTH_SHORT).show()
     }
 
 

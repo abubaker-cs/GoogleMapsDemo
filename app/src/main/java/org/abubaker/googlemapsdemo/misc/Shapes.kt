@@ -1,11 +1,13 @@
-package org.abubaker.googlemapsdemo
+package org.abubaker.googlemapsdemo.misc
 
 import android.graphics.Color
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolygonOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import kotlinx.coroutines.delay
+import org.abubaker.googlemapsdemo.R
 
 class Shapes {
 
@@ -61,12 +63,9 @@ class Shapes {
         // 5 Seconds delay
         delay(5000)
 
-        //
-        val newList = listOf(
+        polyline.points = listOf(
             panama, losAngeles, spain
         )
-
-        polyline.points = newList
 
     }
 
@@ -103,6 +102,44 @@ class Shapes {
             }
 
         )
+
+    }
+
+    // suspend fun addCircle(map: GoogleMap)
+    fun addCircle(map: GoogleMap) {
+
+        // We are calling Map's addCircle() object
+        val circle = map.addCircle(
+
+            // Options
+            CircleOptions().apply {
+
+                // Clickable circle
+                clickable(true)
+
+                // Center of the circle
+                center(losAngeles)
+
+                // Radius of the circle
+                radius(50000.0) // meters
+
+                // Fill Color
+                fillColor(R.color.purple_500)
+
+                // Stroke Color
+                strokeColor(R.color.purple_500)
+
+            }
+
+        )
+
+        // 5 seconds delay
+        // delay(5000)
+
+        // circle.fillColor = R.color.black
+        // circle.radius = 25000.0
+        // circle.strokeColor = R.color.teal_700
+        // circle.fillColor = Color.argb(15, 255, 0, 0)
 
     }
 
