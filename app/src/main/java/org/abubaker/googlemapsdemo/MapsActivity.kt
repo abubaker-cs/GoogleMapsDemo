@@ -1,11 +1,15 @@
 package org.abubaker.googlemapsdemo
 
+import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.*
@@ -15,8 +19,6 @@ import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.abubaker.googlemapsdemo.adapters.CustomInfoAdapter
 import org.abubaker.googlemapsdemo.databinding.ActivityMapsBinding
 import org.abubaker.googlemapsdemo.misc.CameraAndViewport
@@ -43,6 +45,8 @@ class MapsActivity :
     private val cameraAndViewport by lazy { CameraAndViewport() }
     private val shapes by lazy { Shapes() }
     private val overlays by lazy { Overlays() }
+
+    val REQUEST_CODE = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -233,7 +237,7 @@ class MapsActivity :
             // My Location
             // * Requires enabling my-location layer
             // ==============================================
-            // isMyLocationButtonEnabled = true
+            isMyLocationButtonEnabled = true
 
             // onPress Toolbar
             // ==============================================
@@ -254,25 +258,25 @@ class MapsActivity :
         typeAndStyle.setMapStyle(map, this)
 
         // Ground Overlay
-        val groundOverlay = overlays.addGroundOverlayWithTag(map)
+        // val groundOverlay = overlays.addGroundOverlayWithTag(map)
 
-        lifecycleScope.launch {
+        // lifecycleScope.launch {
 
-            // 4 Seconds
-            delay(4000L)
+        // 4 Seconds
+        // delay(4000L)
 
-            // Remove Ground Overlay from the map
-            // groundOverlay?.remove()
+        // Remove Ground Overlay from the map
+        // groundOverlay?.remove()
 
-            // Transparency
-            // groundOverlay?.transparency = 0.5f
+        // Transparency
+        // groundOverlay?.transparency = 0.5f
 
-            // Change the image (must be bitmap, not a vector)
-            // groundOverlay?.setImage(BitmapDescriptorFactory.fromResource(R.drawable.ic_android))
+        // Change the image (must be bitmap, not a vector)
+        // groundOverlay?.setImage(BitmapDescriptorFactory.fromResource(R.drawable.ic_android))
 
-            Log.d("MapsActivity", "Ground Overlay Tag: ${groundOverlay?.tag}")
+        // Log.d("MapsActivity", "Ground Overlay Tag: ${groundOverlay?.tag}")
 
-        }
+        // }
 
         // TODO
         // Rectangular Area (Polygon Shape)
@@ -464,8 +468,29 @@ class MapsActivity :
         // Toast.makeText(this, "Circle Clicked", Toast.LENGTH_SHORT).show()
     }
 
+    private fun checkLocationPermission() {
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+
+            map.isMyLocationEnabled = true
+            Toast.makeText(this, "Already enabled", Toast.LENGTH_SHORT).show()
+
+        } else {
+            requestPermission()
+        }
+    }
+
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            REQUEST_CODE
+        )
+    }
+
 
 }
-
-
-
