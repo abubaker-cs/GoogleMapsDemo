@@ -1,19 +1,21 @@
 package org.abubaker.googlemapsdemo
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
+import com.google.android.gms.maps.GoogleMap.OnPolylineClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.abubaker.googlemapsdemo.adapters.CustomInfoAdapter
 import org.abubaker.googlemapsdemo.databinding.ActivityMapsBinding
@@ -24,10 +26,21 @@ class MapsActivity :
     AppCompatActivity(),
     OnMapReadyCallback,
     // OnMarkerClickListener,
-    OnMarkerDragListener {
+    OnMarkerDragListener,
+    OnPolylineClickListener {
 
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+
+    // Add a marker at the custom location and move the camera
+    private val losAngeles = LatLng(34.04692127928215, -118.24748421830992)
+    private val losAngeles2 = LatLng(34.125037184477044, -118.38286807008632)
+    private val newYork = LatLng(40.7128, -74.0060)
+    private val spain = LatLng(39.556230288288084, -3.310744388397795)
+    private val london = LatLng(51.507621260687635, -0.13113122832629123)
+    private val sydney = LatLng(-33.8674869, 151.2069902)
+    private val panama = LatLng(8.9936, -79.5197)
+
 
     /**
      * References to our external classes in the @misc package
@@ -130,11 +143,6 @@ class MapsActivity :
 
         // Assigning the map
         map = googleMap
-
-        // Add a marker at the custom location and move the camera
-        val losAngeles = LatLng(34.04692127928215, -118.24748421830992)
-        val losAngeles2 = LatLng(34.125037184477044, -118.38286807008632)
-        val newYork = LatLng(40.7128, -74.0060)
 
         // Add Marker
         val losAngelesMarker = map.addMarker(
@@ -249,6 +257,9 @@ class MapsActivity :
         // Custom Map Style
         typeAndStyle.setMapStyle(map, this)
 
+        // Click Listener
+        map.setOnPolylineClickListener(this)
+
         // Constraints: Min/Max Zoom Levels
         // map.setMinZoomPreference(15f)
         // map.setMaxZoomPreference(17f)
@@ -328,6 +339,11 @@ class MapsActivity :
 
         }
 
+        // Coroutine
+        lifecycleScope.launch {
+            addPolyline()
+        }
+
 //        onMapClicked()
 //        onMapLongClicked()
 
@@ -405,6 +421,54 @@ class MapsActivity :
 //        }
 //
 //    }
+
+    private suspend fun addPolyline() {
+
+        // We are calling Map's addPolyline() object
+        val polyline = map.addPolyline(
+
+            // Options
+            PolylineOptions().apply {
+
+                // Specifies whether this polyline is clickable. The default setting is false
+                clickable(true)
+
+                // Adds vertices to the end of the polyline being built.
+                add(losAngeles, newYork, london, spain)
+
+                // Sets the width of the polyline in screen pixels. The default is 10.
+                width(5f)
+
+                // Sets the color of the polyline as a 32-bit ARGB color. The default color is black ( 0xff000000)
+                color(Color.BLUE)
+
+                // Important: It will force the lines to follow earth's curvature
+                // ==============================================================
+                // Specifies whether to draw each segment of this polyline as a geodesic.
+                // The default setting is false
+                geodesic(true)
+
+            }
+
+        )
+
+        // 5 Seconds delay
+        delay(5000)
+
+        //
+        val newList = listOf(
+            panama, losAngeles, spain
+        )
+
+        polyline.points = newList
+
+    }
+
+    override fun onPolylineClick(p0: Polyline) {
+        Toast.makeText(this, "Polyline Clicked", Toast.LENGTH_SHORT).show()
+    }
+
+
 }
 
 
