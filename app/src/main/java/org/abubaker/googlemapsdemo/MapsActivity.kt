@@ -1,6 +1,7 @@
 package org.abubaker.googlemapsdemo
 
-import android.Manifest.permission.ACCESS_FINE_LOCATION
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -383,6 +384,8 @@ class MapsActivity :
 //        onMapClicked()
 //        onMapLongClicked()
 
+        checkLocationPermission()
+
     }
 
     // override fun onMarkerClick(marker: Marker): Boolean {
@@ -468,6 +471,7 @@ class MapsActivity :
         // Toast.makeText(this, "Circle Clicked", Toast.LENGTH_SHORT).show()
     }
 
+    @SuppressLint("MissingPermission")
     private fun checkLocationPermission() {
 
         if (ContextCompat.checkSelfPermission(
@@ -476,7 +480,9 @@ class MapsActivity :
             ) == PackageManager.PERMISSION_GRANTED
         ) {
 
+            // This will display the MY LOCATION BUTTON on the map
             map.isMyLocationEnabled = true
+
             Toast.makeText(this, "Already enabled", Toast.LENGTH_SHORT).show()
 
         } else {
@@ -492,5 +498,34 @@ class MapsActivity :
         )
     }
 
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
+        if (requestCode != REQUEST_CODE) {
+            return
+        }
+
+        when {
+
+            // If the permission was granted by the user
+            grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED -> {
+
+                Toast.makeText(this, "Permission Granted", Toast.LENGTH_SHORT).show()
+
+                // This will redirect the user to his current location
+                map.isMyLocationEnabled = true
+
+            }
+
+            else -> {
+                Toast.makeText(this, "We need your permission", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+    }
 }
