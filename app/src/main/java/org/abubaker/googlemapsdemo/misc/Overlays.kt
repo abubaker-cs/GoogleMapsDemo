@@ -51,4 +51,27 @@ class Overlays {
 
     }
 
+    fun addGroundOverlayWithTag(map: GoogleMap): GroundOverlay? {
+
+        val groundOverlay = map.addGroundOverlay(
+
+            GroundOverlayOptions().apply {
+
+                // Actual Image
+                image(BitmapDescriptorFactory.fromResource(R.drawable.custom_marker))
+
+                // Position: Center in the middle of the SouthWest and NorthEast points
+                positionFromBounds(losAngelesBounds)
+
+            }
+
+
+        )
+
+        groundOverlay?.tag = "My Tag"
+
+        return groundOverlay
+
+    }
+
 }

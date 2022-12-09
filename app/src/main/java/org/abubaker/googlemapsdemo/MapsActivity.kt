@@ -254,7 +254,7 @@ class MapsActivity :
         typeAndStyle.setMapStyle(map, this)
 
         // Ground Overlay
-        val groundOverlay = overlays.addGroundOverlay(map)
+        val groundOverlay = overlays.addGroundOverlayWithTag(map)
 
         lifecycleScope.launch {
 
@@ -264,7 +264,13 @@ class MapsActivity :
             // Remove Ground Overlay from the map
             // groundOverlay?.remove()
 
-            groundOverlay?.transparency = 0.5f
+            // Transparency
+            // groundOverlay?.transparency = 0.5f
+
+            // Change the image (must be bitmap, not a vector)
+            // groundOverlay?.setImage(BitmapDescriptorFactory.fromResource(R.drawable.ic_android))
+
+            Log.d("MapsActivity", "Ground Overlay Tag: ${groundOverlay?.tag}")
 
         }
 
