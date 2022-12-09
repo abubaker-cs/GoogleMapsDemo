@@ -15,10 +15,12 @@ import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.abubaker.googlemapsdemo.adapters.CustomInfoAdapter
 import org.abubaker.googlemapsdemo.databinding.ActivityMapsBinding
 import org.abubaker.googlemapsdemo.misc.CameraAndViewport
+import org.abubaker.googlemapsdemo.misc.Overlays
 import org.abubaker.googlemapsdemo.misc.Shapes
 import org.abubaker.googlemapsdemo.misc.TypeAndStyle
 
@@ -40,6 +42,7 @@ class MapsActivity :
     private val typeAndStyle by lazy { TypeAndStyle() }
     private val cameraAndViewport by lazy { CameraAndViewport() }
     private val shapes by lazy { Shapes() }
+    private val overlays by lazy { Overlays() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -250,6 +253,21 @@ class MapsActivity :
         // Custom Map Style
         typeAndStyle.setMapStyle(map, this)
 
+        // Ground Overlay
+        val groundOverlay = overlays.addGroundOverlay(map)
+
+        lifecycleScope.launch {
+
+            // 4 Seconds
+            delay(4000L)
+
+            // Remove Ground Overlay from the map
+            // groundOverlay?.remove()
+
+            groundOverlay?.transparency = 0.5f
+
+        }
+
         // TODO
         // Rectangular Area (Polygon Shape)
         // shapes.addPolygon(map)
@@ -348,9 +366,9 @@ class MapsActivity :
         // }
 
         // Coroutine
-        lifecycleScope.launch {
-            shapes.addPolyline(map)
-        }
+        // lifecycleScope.launch {
+        // shapes.addPolyline(map)
+        // }
 
 //        onMapClicked()
 //        onMapLongClicked()
