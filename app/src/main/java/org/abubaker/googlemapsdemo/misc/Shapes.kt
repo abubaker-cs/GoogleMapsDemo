@@ -39,7 +39,7 @@ class Shapes {
         val pattern = listOf(
             Dot(),
             Gap(30f),
-            Dash(50f),
+            Dash(60f),
             Gap(30f)
         )
 
@@ -56,20 +56,44 @@ class Shapes {
                 add(losAngeles, newYork, london, spain)
 
                 // Sets the width of the polyline in screen pixels. The default is 10.
-                width(40f)
+                width(30f)
 
                 // Sets the color of the polyline as a 32-bit ARGB color. The default color is black ( 0xff000000)
                 color(Color.BLUE)
 
                 // Custom Pattern for the stroke (Style)
-                pattern(pattern)
-
+                // pattern(pattern)
 
                 // Important: It will force the lines to follow earth's curvature
                 // ==============================================================
                 // Specifies whether to draw each segment of this polyline as a geodesic.
                 // The default setting is false
                 geodesic(true)
+
+                // 0 - Default
+                // 1 - BEVEL
+                // 2 - Round
+                jointType(JointType.ROUND)
+
+                // 1. Custom Cap
+                // 2. Default Cap
+                // 3. Butt Cap = Square Cap
+                // 4. Square Cap
+
+                // CAP: START
+                startCap(
+                    CustomCap(
+
+                        // Source File: (Vectors are not supported)
+                        BitmapDescriptorFactory.fromResource(R.drawable.custom_marker),
+
+                        // Width
+                        50f
+                    )
+                )
+
+                // CAP: END
+                endCap(RoundCap())
 
             }
 
