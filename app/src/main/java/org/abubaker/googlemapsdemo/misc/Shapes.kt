@@ -2,10 +2,7 @@ package org.abubaker.googlemapsdemo.misc
 
 import android.graphics.Color
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.CircleOptions
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.PolygonOptions
-import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.gms.maps.model.*
 import kotlinx.coroutines.delay
 import org.abubaker.googlemapsdemo.R
 
@@ -32,6 +29,20 @@ class Shapes {
 
     suspend fun addPolyline(map: GoogleMap) {
 
+        /**
+         * Stroke Pattern
+         *
+         * 1. Dot
+         * 2. Dash
+         * 3. Gap
+         */
+        val pattern = listOf(
+            Dot(),
+            Gap(30f),
+            Dash(50f),
+            Gap(30f)
+        )
+
         // We are calling Map's addPolyline() object
         val polyline = map.addPolyline(
 
@@ -45,10 +56,14 @@ class Shapes {
                 add(losAngeles, newYork, london, spain)
 
                 // Sets the width of the polyline in screen pixels. The default is 10.
-                width(5f)
+                width(40f)
 
                 // Sets the color of the polyline as a 32-bit ARGB color. The default color is black ( 0xff000000)
                 color(Color.BLUE)
+
+                // Custom Pattern for the stroke (Style)
+                pattern(pattern)
+
 
                 // Important: It will force the lines to follow earth's curvature
                 // ==============================================================

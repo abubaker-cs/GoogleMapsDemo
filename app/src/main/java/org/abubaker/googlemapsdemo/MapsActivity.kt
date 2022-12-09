@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.GoogleMap.*
@@ -14,6 +15,7 @@ import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
+import kotlinx.coroutines.launch
 import org.abubaker.googlemapsdemo.adapters.CustomInfoAdapter
 import org.abubaker.googlemapsdemo.databinding.ActivityMapsBinding
 import org.abubaker.googlemapsdemo.misc.CameraAndViewport
@@ -248,12 +250,13 @@ class MapsActivity :
         // Custom Map Style
         typeAndStyle.setMapStyle(map, this)
 
+        // TODO
         // Rectangular Area (Polygon Shape)
         // shapes.addPolygon(map)
 
 
         // Circular Area (Circle Shape)
-        shapes.addCircle(map)
+        // shapes.addCircle(map)
 
         // Coroutine
         // lifecycleScope.launch { }
@@ -345,9 +348,9 @@ class MapsActivity :
         // }
 
         // Coroutine
-        // lifecycleScope.launch {
-        // shapes.addPolyline()
-        // }
+        lifecycleScope.launch {
+            shapes.addPolyline(map)
+        }
 
 //        onMapClicked()
 //        onMapLongClicked()
