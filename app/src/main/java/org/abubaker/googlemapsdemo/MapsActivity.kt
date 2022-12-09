@@ -248,6 +248,9 @@ class MapsActivity :
         // Custom Map Style
         typeAndStyle.setMapStyle(map, this)
 
+        // Rectangular Area (Polygon Shape)
+        shapes.addPolygon(map)
+
         // Click Listener - Polyline
         // map.setOnPolylineClickListener(this)
 
